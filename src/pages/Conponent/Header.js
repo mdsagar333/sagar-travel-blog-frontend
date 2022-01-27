@@ -6,6 +6,7 @@ import logo from "./../../assets/images/logo.PNG";
 const Header = () => {
   const { user, logout } = useContextAPI();
 
+  console.log(user);
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary py-0">

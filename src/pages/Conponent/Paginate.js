@@ -7,10 +7,10 @@ const Paginate = ({ total, perPage, handlePaginate }) => {
   );
   return (
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
+      <ul className="pagination">
         {number.map((num) => (
-          <li class="page-item" key={num}>
-            <button class="page-link" onClick={() => handlePaginate(num)}>
+          <li className="page-item" key={num}>
+            <button className="page-link" onClick={() => handlePaginate(num)}>
               {num}
             </button>
           </li>

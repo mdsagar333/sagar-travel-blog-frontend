@@ -8,6 +8,7 @@ import {
   signOut,
   updateProfile,
   signInWithEmailAndPassword,
+  sendEmailVerification,
 } from "firebase/auth";
 import firebaseInitializationAuth from "../Firebase/firebase.initialization";
 
@@ -17,47 +18,32 @@ const useFirebaseAuth = () => {
   const [userLoading, setUserLoading] = useState(true);
   const [authError, setAuthError] = useState("");
   const [admin, setAdmin] = useState(false);
+  const [emailVerification, setEmailVerification] = useState("");
 
   const auth = getAuth();
 
   // create user with email password
-  const createUserWithEmail = (email, password, name, navigate) => {
+  const createUserWithEmail = async (email, password, name, navigate) => {
     setUserLoading(true);
     setAuthError("");
-    createUserWithEmailAndPassword(auth, email, password)
+    await createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // saving to database
         const user = userCredential.user;
-        console.log(user);
-        // // updating user name
-        // updateProfile(auth.currentUser, { displayName: name })
-        //   .then(() => {
-        //     fetch("https://fierce-bastion-00988.herokuapp.com/users", {
-        //       method: "POST",
-        //       headers: {
-        //         "Content-Type": "application/json",
-        //       },
-        //       body: JSON.stringify({
-        //         name,
-        //         email,
-        //         userUID: user.uid,
-        //         role: "user",
-        //       }),
-        //     });
-        //   })
-        //   .catch((err) => {
-        //     setAuthErrorRegister(err.message);
-        //   });
-
-        // // redirecting to home page
-        navigate("/");
+        // redirecting to home page
+        // navigate("/");
       })
       .catch((err) => {
         setAuthError(err.message);
-      })
-      .finally(() => {
-        setUserLoading(false);
       });
+    await sendEmailVerification(auth.currentUser).then(() => {
+      setEmailVerification("Verification email was sent to");
+    });
+    await updateProfile(auth.currentUser, { displayName: name }).then(() => {
+      console.log("Profile updated");
+    });
+    console.log("navigate");
+    navigate("/", { replace: true });
   };
 
   // email sign in
@@ -83,6 +69,8 @@ const useFirebaseAuth = () => {
     const redirectURL = location?.state?.from?.pathname || "/";
     signInWithPopup(auth, googleProvider).then((result) => {
       setUser(result.user);
+      console.log(result.user);
+
       navigate(redirectURL);
     });
   };

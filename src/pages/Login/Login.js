@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useContextAPI from "../../Hooks/useContextAPI";
+import Header from "../Conponent/Header";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -28,7 +29,8 @@ const Login = () => {
     googleSignIn(location, navigate);
   };
   return (
-    <div>
+    <>
+      <Header />
       <section className="">
         <div className="container py-5 h-100">
           <div className="row d-flex align-items-center justify-content-center h-100">
@@ -102,7 +104,7 @@ const Login = () => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import useContextAPI from "../../Hooks/useContextAPI";
 import { useNavigate } from "react-router-dom";
+import Header from "../Conponent/Header";
 const Register = () => {
   let navigate = useNavigate();
-  const { googleSignIn, createUserWithEmail } = useContextAPI();
+  const { googleSignIn, createUserWithEmail, authError } = useContextAPI();
   const [registerUser, setRegisterUser] = useState({
     name: "",
     email: "",
@@ -26,7 +27,8 @@ const Register = () => {
   };
 
   return (
-    <div>
+    <>
+      <Header />
       <section className="">
         <div className="container py-5 ">
           <div className="row d-flex align-items-center justify-content-center h-100">
@@ -85,6 +87,9 @@ const Register = () => {
                 </div>
 
                 {/* <!-- Submit button --> */}
+                {authError.length > 0 && (
+                  <p className="alert alert-danger">{authError}</p>
+                )}
                 <button
                   type="submit"
                   className="btn btn-primary w-100 btn-block"
@@ -118,7 +123,7 @@ const Register = () => {
           </div>
         </div>
       </section>
-    </div>
+    </>
   );
 };
 

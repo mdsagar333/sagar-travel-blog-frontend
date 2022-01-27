@@ -48,6 +48,7 @@ const Home = () => {
   console.log(perPageBlogs);
   return (
     <div className="">
+      <Header />
       <HomeCarousel />
       <div className="container">
         <div className="row g-4">

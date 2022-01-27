@@ -5,18 +5,26 @@ import BlogDetails from "./pages/BlogDetails/BlogDetails";
 import NotFound from "./pages/NotFound/NotFound";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
-import Header from "./pages/Conponent/Header";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PrivateRoute from "./pages/Shared/PrivateRoute";
 import Footer from "./pages/Conponent/Footer";
+import EmailVerify from "./pages/EmailVerify/EmailVerify";
+import useContextAPI from "./Hooks/useContextAPI";
+import Loading from "./pages/Shared/Loading";
 function App() {
+  const { user, userLoading } = useContextAPI();
+
+  if (userLoading) {
+    return <Loading />;
+  }
+
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/verify-email" element={<EmailVerify />}></Route>
         <Route
-          path="blogs/:id"
+          path="/blogs/:id"
           element={
             <PrivateRoute>
               <BlogDetails />
@@ -24,15 +32,15 @@ function App() {
           }
         ></Route>
         <Route
-          path="dashboard"
+          path="/dashboard"
           element={
             <PrivateRoute>
               <Dashboard />
             </PrivateRoute>
           }
         ></Route>
-        <Route path="login" element={<Login />}></Route>
-        <Route path="register" element={<Register />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
       <Footer />
