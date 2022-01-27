@@ -2,7 +2,7 @@ import React from "react";
 
 const Loading = () => {
   return (
-    <div className="container mx-auto">
+    <div className="container d-flex justify-content-center mt-5">
       <div className="spinner-border" role="status">
         <span className="visually-hidden">Loading...</span>
       </div>

@@ -5,7 +5,6 @@ export const contextAPI = createContext();
 
 const AllContext = ({ children }) => {
   const firebase = useFirebaseAuth();
-  console.log(firebase);
   return (
     <contextAPI.Provider value={{ ...firebase }}>
       {children}

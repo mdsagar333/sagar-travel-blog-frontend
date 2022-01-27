@@ -8,13 +8,21 @@ import Register from "./pages/Register/Register";
 import Header from "./pages/Conponent/Header";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import PrivateRoute from "./pages/Shared/PrivateRoute";
+import Footer from "./pages/Conponent/Footer";
 function App() {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
         <Route path="/" element={<Home />}></Route>
-        <Route path="blogs" element={<BlogDetails />}></Route>
+        <Route
+          path="blogs/:id"
+          element={
+            <PrivateRoute>
+              <BlogDetails />
+            </PrivateRoute>
+          }
+        ></Route>
         <Route
           path="dashboard"
           element={
@@ -27,6 +35,7 @@ function App() {
         <Route path="register" element={<Register />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }

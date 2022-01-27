@@ -1,9 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import useContextAPI from "../../Hooks/useContextAPI";
+
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setpassword] = useState("");
+  const { googleSignIn, logInUserWithEmail } = useContextAPI();
+  const location = useLocation();
+  let navigate = useNavigate();
+
+  console.log(location);
+  const handleChangeEmail = (e) => {
+    setEmail(e.target.value);
+  };
+  const handleChangePassword = (e) => {
+    setpassword(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(email, password);
+    logInUserWithEmail(email, password, location, navigate);
+  };
+
+  // google sign in
+  const handleGoogleSignIn = () => {
+    googleSignIn(location, navigate);
+  };
   return (
     <div>
-      <section className="vh-100">
+      <section className="">
         <div className="container py-5 h-100">
           <div className="row d-flex align-items-center justify-content-center h-100">
             <div className="col-md-8 col-lg-7 col-xl-6">
@@ -15,13 +41,15 @@ const Login = () => {
             </div>
             <div className="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
               <h1 className="mb-3">Sign in</h1>
-              <form>
+              <form onSubmit={handleSubmit}>
                 {/* <!-- Email input --> */}
                 <div className="form-outline mb-2">
                   <input
                     type="email"
                     id="form1Example13"
                     className="form-control "
+                    onChange={handleChangeEmail}
+                    required
                   />
                   <label className="form-label" htmlFor="form1Example13">
                     Email address
@@ -34,6 +62,8 @@ const Login = () => {
                     type="password"
                     id="form1Example23"
                     className="form-control"
+                    onChange={handleChangePassword}
+                    required
                   />
                   <label className="form-label" htmlFor="form1Example23">
                     Password
@@ -60,16 +90,14 @@ const Login = () => {
                 <div className="divider d-flex align-items-center my-2">
                   <p className="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
                 </div>
-
-                <a
-                  className="btn btn-primary btn-block"
-                  style={{ backgroundColor: "#34A853" }}
-                  href="#!"
-                  role="button"
-                >
-                  <i className="fab fa-google me-2"></i>Continue with Google
-                </a>
               </form>
+              <button
+                className="btn btn-primary btn-block"
+                style={{ backgroundColor: "#34A853" }}
+                onClick={handleGoogleSignIn}
+              >
+                <i className="fab fa-google me-2"></i>Continue with Google
+              </button>
             </div>
           </div>
         </div>
