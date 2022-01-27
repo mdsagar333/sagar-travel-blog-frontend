@@ -29,7 +29,7 @@ const Header = () => {
             {user ? (
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <Link className="nav-link fw-bold" to="dashboard">
+                  <Link className="nav-link fw-bold" to="/dashboard">
                     Dashboard
                   </Link>
                 </li>

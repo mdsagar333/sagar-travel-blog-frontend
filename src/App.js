@@ -16,6 +16,7 @@ import AddExperience from "./pages/Dashboard/User/AddExperience";
 import AllExperiences from "./pages/Dashboard/Admin/AllExperiences";
 import PendingExperiences from "./pages/Dashboard/Admin/PendingExperiences";
 import MakeAdmin from "./pages/Dashboard/Admin/MakeAdmin";
+import CreateExperience from "./pages/Dashboard/Admin/CreateExperience";
 function App() {
   const { user, userLoading } = useContextAPI();
 
@@ -47,6 +48,10 @@ function App() {
           <Route path="my-experiences" element={<MyExperiences />}></Route>
           <Route path="add-experience" element={<AddExperience />}></Route>
           <Route path="experiences" element={<AllExperiences />}></Route>
+          <Route
+            path="create-experiences"
+            element={<CreateExperience />}
+          ></Route>
           <Route
             path="pending-experiences"
             element={<PendingExperiences />}

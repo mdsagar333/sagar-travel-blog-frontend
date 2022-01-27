@@ -39,6 +39,11 @@ const Dashboard = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
+                    <Link className="nav-link" to="create-experiences">
+                      Create Experience
+                    </Link>
+                  </li>
+                  <li className="nav-item">
                     <Link className="nav-link" to="make-admin">
                       Make Admin
                     </Link>

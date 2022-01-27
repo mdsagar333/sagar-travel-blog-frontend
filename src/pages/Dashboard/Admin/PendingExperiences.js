@@ -1,8 +1,26 @@
 import React, { useState, useEffect } from "react";
+import Loading from "../../Shared/Loading";
 
 const PendingExperiences = () => {
   const [pendingBlogs, setPendingBlogs] = useState([]);
   const [pedingLoading, setPendingLoading] = useState(true);
+  const [isNeededUpdate, setIsNeededUpdate] = useState(0);
+
+  const handleApprove = (id) => {
+    const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/approve/${id}`;
+    const approveBlog = async () => {
+      setPendingLoading(true);
+      await fetch(url, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      setIsNeededUpdate(isNeededUpdate + 1);
+    };
+
+    approveBlog();
+  };
 
   useEffect(() => {
     const fetchPending = async () => {
@@ -14,7 +32,7 @@ const PendingExperiences = () => {
     };
 
     fetchPending();
-  }, []);
+  }, [isNeededUpdate]);
 
   console.log(pendingBlogs);
   return (
@@ -29,18 +47,24 @@ const PendingExperiences = () => {
             <th scope="col">Status</th>
           </tr>
         </thead>
-        <tbody>
-          {pendingBlogs.map((blog, index) => (
-            <tr key={blog._id}>
-              <th scope="row">{index + 1}</th>
-              <td>{blog.blogTitle}</td>
-              <td>{blog.date}</td>
-              <td>
-                <button>Approve</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
+        {pedingLoading ? (
+          <Loading />
+        ) : (
+          <tbody>
+            {pendingBlogs.map((blog, index) => (
+              <tr key={blog._id}>
+                <th scope="row">{index + 1}</th>
+                <td>{blog.blogTitle}</td>
+                <td>{blog.date}</td>
+                <td>
+                  <button onClick={() => handleApprove(blog._id)}>
+                    Approve
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        )}
       </table>
     </div>
   );

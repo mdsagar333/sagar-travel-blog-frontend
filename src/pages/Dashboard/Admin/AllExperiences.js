@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Loading from "../../Shared/Loading";
 
 const AllExperiences = () => {
   const [allBlogs, setAllBlogs] = useState([]);
@@ -16,33 +17,36 @@ const AllExperiences = () => {
     fetchBlogs();
   }, []);
 
-  console.log(allBlogs);
   return (
     <div>
       <h1 className="text-center my-4">All Experiences</h1>
-      <table className="table">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Date</th>
-            <th scope="col">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {allBlogs.map((blog, index) => (
-            <tr key={blog._id}>
-              <th scope="row">{index + 1}</th>
-              <td>{blog.blogTitle}</td>
-              <td>{blog.date}</td>
-              <td>
-                <button>update</button>
-                <button>Delete</button>
-              </td>
+      {blogLoading ? (
+        <Loading />
+      ) : (
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th scope="col">Date</th>
+              <th scope="col">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {allBlogs.map((blog, index) => (
+              <tr key={blog._id}>
+                <th scope="row">{index + 1}</th>
+                <td>{blog.blogTitle}</td>
+                <td>{blog.date}</td>
+                <td>
+                  <button>update</button>
+                  <button>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
