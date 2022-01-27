@@ -17,9 +17,9 @@ const Home = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       setIsBlogLoading(true);
-      const data = await fetch("http://localhost:5000/api/v1/blogs").then(
-        (res) => res.json()
-      );
+      const data = await fetch(
+        "https://gentle-retreat-89471.herokuapp.com/api/v1/blogs"
+      ).then((res) => res.json());
       setIsBlogLoading(false);
       setBlogs(data.blogs);
       setPerPageBlogs(data.blogs.slice(0, blogsPerPage));
@@ -31,7 +31,7 @@ const Home = () => {
   useEffect(() => {
     const fetchTopSpot = async () => {
       const blogs = await fetch(
-        "http://localhost:5000/api/v1/top-rated-blogs"
+        "https://gentle-retreat-89471.herokuapp.com/api/v1/top-rated-blogs"
       ).then((res) => res.json());
 
       setTopBlogs(blogs.blogs);

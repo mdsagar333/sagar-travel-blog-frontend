@@ -86,7 +86,7 @@ const Login = () => {
                     className="text-decoration-none"
                     style={{ color: "#393f81" }}
                   >
-                    Sing up here
+                    Sign up here
                   </Link>
                 </p>
                 <div className="divider d-flex align-items-center my-2">

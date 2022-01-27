@@ -11,6 +11,11 @@ import Footer from "./pages/Conponent/Footer";
 import EmailVerify from "./pages/EmailVerify/EmailVerify";
 import useContextAPI from "./Hooks/useContextAPI";
 import Loading from "./pages/Shared/Loading";
+import MyExperiences from "./pages/Dashboard/User/MyExperiences";
+import AddExperience from "./pages/Dashboard/User/AddExperience";
+import AllExperiences from "./pages/Dashboard/Admin/AllExperiences";
+import PendingExperiences from "./pages/Dashboard/Admin/PendingExperiences";
+import MakeAdmin from "./pages/Dashboard/Admin/MakeAdmin";
 function App() {
   const { user, userLoading } = useContextAPI();
 
@@ -38,7 +43,16 @@ function App() {
               <Dashboard />
             </PrivateRoute>
           }
-        ></Route>
+        >
+          <Route path="my-experiences" element={<MyExperiences />}></Route>
+          <Route path="add-experience" element={<AddExperience />}></Route>
+          <Route path="experiences" element={<AllExperiences />}></Route>
+          <Route
+            path="pending-experiences"
+            element={<PendingExperiences />}
+          ></Route>
+          <Route path="make-admin" element={<MakeAdmin />}></Route>
+        </Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<Register />}></Route>
         <Route path="*" element={<NotFound />}></Route>

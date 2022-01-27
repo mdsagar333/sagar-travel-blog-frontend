@@ -16,7 +16,7 @@ const BlogDetails = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       setIsBlogLoading(true);
-      const url = `http://localhost:5000/api/v1/blogs/${id}`;
+      const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/${id}`;
       const data = await fetch(url).then((res) => res.json());
       setBlog(data.blog);
       setIsBlogLoading(false);

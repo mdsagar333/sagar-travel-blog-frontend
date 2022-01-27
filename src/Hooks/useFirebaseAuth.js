@@ -11,6 +11,7 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import firebaseInitializationAuth from "../Firebase/firebase.initialization";
+import { async } from "@firebase/util";
 
 firebaseInitializationAuth();
 const useFirebaseAuth = () => {
@@ -23,37 +24,53 @@ const useFirebaseAuth = () => {
   const auth = getAuth();
 
   // create user with email password
-  const createUserWithEmail = async (email, password, name, navigate) => {
-    setUserLoading(true);
+  const createUserWithEmail = async (email, password, name, history) => {
     setAuthError("");
-    await createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // saving to database
         const user = userCredential.user;
         // redirecting to home page
-        // navigate("/");
+        updateProfile(auth.currentUser, { displayName: name }).then(
+          async () => {
+            console.log("user updated");
+            await fetch(
+              "https://gentle-retreat-89471.herokuapp.com/api/v1/user",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name,
+                  email,
+                  uid: auth.currentUser.uid,
+                }),
+              }
+            );
+            history("/", { replace: true });
+          }
+        );
       })
       .catch((err) => {
         setAuthError(err.message);
+      })
+      .finally(() => {
+        setUserLoading(false);
       });
-    await sendEmailVerification(auth.currentUser).then(() => {
-      setEmailVerification("Verification email was sent to");
-    });
-    await updateProfile(auth.currentUser, { displayName: name }).then(() => {
-      console.log("Profile updated");
-    });
-    console.log("navigate");
-    navigate("/", { replace: true });
   };
 
   // email sign in
   const logInUserWithEmail = (email, password, location, history) => {
-    setUserLoading(true);
     setAuthError("");
     const redirectURL = location?.state?.from?.pathname || "/";
     console.log(redirectURL);
     signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
+      .then(async (result) => {
+        // const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${result.user.uid}`;
+        // const admin = await fetch(url).then((res) => res.json());
+        // console.log(admin);
+        // setAdmin(admin.isAdmin);
         history(redirectURL);
         setUserLoading(false);
       })
@@ -67,10 +84,23 @@ const useFirebaseAuth = () => {
   const googleSignIn = (location, navigate) => {
     const googleProvider = new GoogleAuthProvider();
     const redirectURL = location?.state?.from?.pathname || "/";
-    signInWithPopup(auth, googleProvider).then((result) => {
+    signInWithPopup(auth, googleProvider).then(async (result) => {
       setUser(result.user);
-      console.log(result.user);
-
+      await fetch("https://gentle-retreat-89471.herokuapp.com/api/v1/user", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: result.user.displayName,
+          email: result.user.email,
+          uid: result.user.uid,
+        }),
+      }).then((res) => res.json());
+      // const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${result.user.uid}`;
+      // const admin = await fetch(url).then((res) => res.json());
+      // console.log(admin);
+      // setAdmin(admin.isAdmin);
       navigate(redirectURL);
     });
   };
@@ -93,9 +123,14 @@ const useFirebaseAuth = () => {
     setUserLoading(true);
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user);
-        setAdmin(user);
-        setUserLoading(false);
+        const checkAdmin = async () => {
+          const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${user.uid}`;
+          const admin = await fetch(url).then((res) => res.json());
+          setUser(user);
+          setAdmin(admin.isAdmin);
+          setUserLoading(false);
+        };
+        checkAdmin();
       } else {
         setUser(null);
         setAdmin(null);
