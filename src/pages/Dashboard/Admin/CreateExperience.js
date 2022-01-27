@@ -32,18 +32,17 @@ const CreateExperience = () => {
 
   const handleBlogPost = async (e) => {
     e.preventDefault();
+    console.log("creating blog");
     let formData = new FormData();
     for (const i in blogData) {
       formData.append(i, blogData[i]);
     }
     formData.append("uid", user.uid);
-    const post = await axios.post(
-      "https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/admin",
-      formData,
-      {
-        headers: { "Content-Type": "multipart/form-data" },
-      }
-    );
+    const url = "https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/admin";
+    // const url = "http://127.0.0.1:5000/api/v1/blogs/admin";
+    const post = await axios.post(url, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     console.log(post);
   };
   return (

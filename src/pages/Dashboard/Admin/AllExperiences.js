@@ -5,6 +5,24 @@ const AllExperiences = () => {
   const [allBlogs, setAllBlogs] = useState([]);
   const [blogLoading, setBlogLoading] = useState(true);
 
+  const handleDelete = (id) => {
+    console.log(id);
+    const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/${id}`;
+    // const url = `http://127.0.0.1:5000/api/v1/blogs/${id}`;
+    setBlogLoading(true);
+    fetch(url, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setBlogLoading(false);
+      });
+  };
+
   useEffect(() => {
     const fetchBlogs = async () => {
       const blogs = await fetch(
@@ -40,7 +58,7 @@ const AllExperiences = () => {
                 <td>{blog.date}</td>
                 <td>
                   <button>update</button>
-                  <button>Delete</button>
+                  <button onClick={() => handleDelete(blog._id)}>Delete</button>
                 </td>
               </tr>
             ))}
