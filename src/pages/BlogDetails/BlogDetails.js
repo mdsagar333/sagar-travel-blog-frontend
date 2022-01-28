@@ -46,7 +46,7 @@ const BlogDetails = () => {
             />
             <h2 className="mb-2">{blog.blogTitle}</h2>
             <p>
-              <i class="fas fa-map-marker-alt me-2"></i>
+              <i className="fas fa-map-marker-alt me-2"></i>
               {blog.city}, {blog.county}
             </p>
             <div className="">

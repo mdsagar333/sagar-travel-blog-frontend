@@ -17,6 +17,7 @@ import AllExperiences from "./pages/Dashboard/Admin/AllExperiences";
 import PendingExperiences from "./pages/Dashboard/Admin/PendingExperiences";
 import MakeAdmin from "./pages/Dashboard/Admin/MakeAdmin";
 import CreateExperience from "./pages/Dashboard/Admin/CreateExperience";
+import CheckVerify from "./pages/Shared/CheckVerify";
 function App() {
   const { user, userLoading } = useContextAPI();
 
@@ -33,7 +34,9 @@ function App() {
           path="/blogs/:id"
           element={
             <PrivateRoute>
-              <BlogDetails />
+              <CheckVerify>
+                <BlogDetails />
+              </CheckVerify>
             </PrivateRoute>
           }
         ></Route>

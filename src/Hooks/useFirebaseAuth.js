@@ -45,9 +45,15 @@ const useFirebaseAuth = () => {
                   name,
                   email,
                   uid: auth.currentUser.uid,
+                  isNeedToVerify: true,
                 }),
               }
             );
+            await sendEmailVerification(auth.currentUser).then(() => {
+              // Email verification sent!
+              // ...
+              console.log("verification sent from register");
+            });
             history("/", { replace: true });
           }
         );
@@ -81,10 +87,10 @@ const useFirebaseAuth = () => {
   };
 
   // google sign in
-  const googleSignIn = (location, navigate) => {
+  const googleSignIn = async (location, navigate) => {
     const googleProvider = new GoogleAuthProvider();
     const redirectURL = location?.state?.from?.pathname || "/";
-    signInWithPopup(auth, googleProvider).then(async (result) => {
+    await signInWithPopup(auth, googleProvider).then(async (result) => {
       setUser(result.user);
       await fetch("https://gentle-retreat-89471.herokuapp.com/api/v1/user", {
         method: "PUT",
@@ -95,14 +101,29 @@ const useFirebaseAuth = () => {
           name: result.user.displayName,
           email: result.user.email,
           uid: result.user.uid,
+          isNeedToVerify: true,
+          role: "user",
         }),
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
+
       // const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${result.user.uid}`;
       // const admin = await fetch(url).then((res) => res.json());
       // console.log(admin);
       // setAdmin(admin.isAdmin);
-      navigate(redirectURL);
     });
+    await sendEmailVerification(auth.currentUser)
+      .then(() => {
+        // Email verification sent!
+        // ...
+        console.log("verification sent");
+      })
+      .catch((err) => {
+        console.log("verification err");
+        console.log(err);
+      });
+    navigate(redirectURL);
   };
 
   // logout
@@ -124,11 +145,14 @@ const useFirebaseAuth = () => {
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
         const checkAdmin = async () => {
-          const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${user.uid}`;
+          // const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${user.uid}`;
+          const url = `http://127.0.0.1:5000/api/v1/admin/${user.uid}`;
           const admin = await fetch(url).then((res) => res.json());
+          console.log(admin);
           setUser(user);
           setAdmin(admin.isAdmin);
           setUserLoading(false);
+          setEmailVerification(admin.isNeedToVerify);
         };
         checkAdmin();
       } else {
@@ -146,6 +170,7 @@ const useFirebaseAuth = () => {
     userLoading,
     authError,
     admin,
+    emailVerification,
     googleSignIn,
     logInUserWithEmail,
     createUserWithEmail,
