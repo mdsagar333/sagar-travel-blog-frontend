@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from "react";
+
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
 import Loading from "../../Shared/Loading";
 
 const AllExperiences = () => {
   const [allBlogs, setAllBlogs] = useState([]);
   const [blogLoading, setBlogLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const [actionId, setActionId] = useState();
+  const [isNeededUpdate, setIsNeededUpdate] = useState(0);
 
-  const handleDelete = (id) => {
-    console.log(id);
-    const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/${id}`;
-    // const url = `http://127.0.0.1:5000/api/v1/blogs/${id}`;
+  const onOpenModal = (id) => {
+    setActionId(id);
+    setOpen(true);
+  };
+  const onCloseModal = () => setOpen(false);
+
+  const handleDelete = () => {
+    const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/${actionId}`;
+    // const url = `http://127.0.0.1:5000/api/v1/blogs/${actionId}`;
     setBlogLoading(true);
+    setOpen(false);
     fetch(url, {
       method: "DELETE",
       headers: {
@@ -19,7 +31,10 @@ const AllExperiences = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+      })
+      .finally(() => {
         setBlogLoading(false);
+        setIsNeededUpdate(isNeededUpdate + 1);
       });
   };
 
@@ -33,7 +48,7 @@ const AllExperiences = () => {
     };
 
     fetchBlogs();
-  }, []);
+  }, [isNeededUpdate]);
 
   return (
     <div>
@@ -58,13 +73,21 @@ const AllExperiences = () => {
                 <td>{blog.date}</td>
                 <td>
                   <button>update</button>
-                  <button onClick={() => handleDelete(blog._id)}>Delete</button>
+                  <button onClick={() => onOpenModal(blog._id)}>Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+      <Modal open={open} onClose={onCloseModal} center>
+        <div className="moadl_bg px-4 pt-4">
+          <h2 className="mb-3">Are you sure?</h2>
+          <button className="btn btn-outline-primary" onClick={handleDelete}>
+            Confirm
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

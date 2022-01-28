@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import axios from "axios";
 import useContextAPI from "../../../Hooks/useContextAPI";
 import ExperienceForm from "../Component/ExperienceForm";
+import Loading from "../../Shared/Loading";
 
 const CreateExperience = () => {
   const { user } = useContextAPI();
+  const [isCreating, setIsCreating] = useState(false);
+  const [notification, setNotification] = useState("");
   const [blogData, setBlogData] = useState({
     blogTitle: "",
     description: "",
@@ -40,19 +43,30 @@ const CreateExperience = () => {
     formData.append("uid", user.uid);
     const url = "https://gentle-retreat-89471.herokuapp.com/api/v1/blogs/admin";
     // const url = "http://127.0.0.1:5000/api/v1/blogs/admin";
+    setIsCreating(true);
     const post = await axios.post(url, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
-    console.log(post);
+    if (post.status === 201) {
+      setNotification("Your experience posted successfully.");
+    }
+    setIsCreating(false);
   };
   return (
     <div className="container">
       <h1 className="text-center my-4">Create Experience</h1>
-      <ExperienceForm
-        handleOnchange={handleOnchange}
-        handleImage={handleImage}
-        handleBlogPost={handleBlogPost}
-      />
+      {notification.length > 0 && (
+        <p className="alert alert-success">{notification}</p>
+      )}
+      {isCreating ? (
+        <Loading />
+      ) : (
+        <ExperienceForm
+          handleOnchange={handleOnchange}
+          handleImage={handleImage}
+          handleBlogPost={handleBlogPost}
+        />
+      )}
     </div>
   );
 };

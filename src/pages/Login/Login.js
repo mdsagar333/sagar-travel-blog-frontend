@@ -10,7 +10,6 @@ const Login = () => {
   const location = useLocation();
   let navigate = useNavigate();
 
-  console.log(location);
   const handleChangeEmail = (e) => {
     setEmail(e.target.value);
   };
@@ -20,7 +19,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email, password);
     logInUserWithEmail(email, password, location, navigate);
   };
 

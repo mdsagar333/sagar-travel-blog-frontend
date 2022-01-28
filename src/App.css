@@ -39,3 +39,11 @@ body {
 .footer_logo {
   width: 100px;
 }
+
+.author_img {
+  max-width: 200px;
+}
+
+.blog_title:hover {
+  color: dodgerblue !important;
+}

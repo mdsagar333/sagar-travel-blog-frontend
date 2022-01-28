@@ -17,7 +17,7 @@ const BlogCard = ({
 
         <div className="card-body p-5">
           <Link
-            className="card-title h3 text-decoration-none text-dark"
+            className="card-title h3 text-decoration-none text-dark blog_title"
             to={`blogs/${_id}`}
           >
             {blogTitle}

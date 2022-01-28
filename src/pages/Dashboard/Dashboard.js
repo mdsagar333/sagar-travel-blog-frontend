@@ -20,7 +20,7 @@ const Dashboard = () => {
                 <ul className="nav flex-column py-3 ps-0 pe-1">
                   <li className="nav-item">
                     <Link
-                      className="nav-link active"
+                      className="nav-link active dash_link"
                       aria-current="page"
                       to="/"
                     >
@@ -29,22 +29,31 @@ const Dashboard = () => {
                   </li>
 
                   <li className="nav-item">
-                    <Link className="nav-link" to="experiences">
+                    <Link
+                      className="nav-link active dash_link"
+                      to="experiences"
+                    >
                       All Experiences
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="pending-experiences">
+                    <Link
+                      className="nav-link active dash_link"
+                      to="pending-experiences"
+                    >
                       Pending Experiences
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="create-experiences">
+                    <Link
+                      className="nav-link active dash_link"
+                      to="create-experiences"
+                    >
                       Create Experience
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="make-admin">
+                    <Link className="nav-link active dash_link" to="make-admin">
                       Make Admin
                     </Link>
                   </li>
@@ -53,7 +62,7 @@ const Dashboard = () => {
                 <ul className="nav flex-column py-3 ps-0 pe-1">
                   <li className="nav-item">
                     <Link
-                      className="nav-link active"
+                      className="nav-link active dash_link"
                       aria-current="page"
                       to="/"
                     >
@@ -62,7 +71,7 @@ const Dashboard = () => {
                   </li>
                   <li className="nav-item">
                     <Link
-                      className="nav-link active"
+                      className="nav-link active dash_link"
                       aria-current="page"
                       to="my-experiences"
                     >
@@ -70,7 +79,10 @@ const Dashboard = () => {
                     </Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="add-experience">
+                    <Link
+                      className="nav-link active dash_link"
+                      to="add-experience"
+                    >
                       Add New Experience
                     </Link>
                   </li>

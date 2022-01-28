@@ -73,7 +73,11 @@ const BlogDetails = () => {
           <div className="col-12 col-md-3">
             <div>
               <div className=" mb-3">
-                <img src={blog.authorImg} alt={blog.blogAuthor} />
+                <img
+                  src={blog.authorImg}
+                  alt={blog.blogAuthor}
+                  className="author_img"
+                />
                 <div className="">
                   <small className="text-muted ">Written by</small>
                   <h6 className="mb-2">{blog.blogAuthor}</h6>

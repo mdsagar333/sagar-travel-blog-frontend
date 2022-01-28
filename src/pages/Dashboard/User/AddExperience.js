@@ -3,11 +3,12 @@ import axios from "axios";
 import ExperienceForm from "../Component/ExperienceForm";
 import { async } from "@firebase/util";
 import useContextAPI from "../../../Hooks/useContextAPI";
+import Loading from "../../Shared/Loading";
 
 const AddExperience = () => {
   const { user } = useContextAPI();
-  const [successMsg, setSuccessMsg] = useState("");
-  const [isBlogLoading, setIsBlogLoading] = useState(false);
+  const [notification, setNotification] = useState("");
+  const [isBlogCreating, setIsBlogCreating] = useState(false);
   const [blogData, setBlogData] = useState({
     blogTitle: "",
     description: "",
@@ -36,13 +37,13 @@ const AddExperience = () => {
 
   const handleBlogPost = async (e) => {
     e.preventDefault();
-    setSuccessMsg("");
+    setNotification("");
     let formData = new FormData();
     for (const i in blogData) {
       formData.append(i, blogData[i]);
     }
     formData.append("uid", user.uid);
-    setIsBlogLoading(true);
+    setIsBlogCreating(true);
     const post = await axios.post(
       "https://gentle-retreat-89471.herokuapp.com/api/v1/blogs",
       formData,
@@ -50,23 +51,26 @@ const AddExperience = () => {
         headers: { "Content-Type": "multipart/form-data" },
       }
     );
-    console.log(post);
     if (post.status === 201) {
-      setSuccessMsg("Your experience added");
-      setIsBlogLoading(false);
+      setNotification("Your experience created successfully");
     }
+    setIsBlogCreating(false);
   };
   return (
     <div>
       <h1 className="text-center my-4">Create A New Experience</h1>
-      {successMsg.length > 0 && (
-        <p className="alert alert-success">{successMsg}</p>
+      {notification.length > 0 && (
+        <p className="alert alert-success">{notification}</p>
       )}
-      <ExperienceForm
-        handleOnchange={handleOnchange}
-        handleImage={handleImage}
-        handleBlogPost={handleBlogPost}
-      />
+      {isBlogCreating ? (
+        <Loading />
+      ) : (
+        <ExperienceForm
+          handleOnchange={handleOnchange}
+          handleImage={handleImage}
+          handleBlogPost={handleBlogPost}
+        />
+      )}
     </div>
   );
 };
