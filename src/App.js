@@ -44,7 +44,9 @@ function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <CheckVerify>
+                <Dashboard />
+              </CheckVerify>
             </PrivateRoute>
           }
         >
