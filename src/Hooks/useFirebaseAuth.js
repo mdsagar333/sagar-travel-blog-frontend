@@ -54,7 +54,7 @@ const useFirebaseAuth = () => {
               // ...
               console.log("verification sent from register");
             });
-            history("/", { replace: true });
+            history("/verify-email", { replace: true });
           }
         );
       })
@@ -145,8 +145,8 @@ const useFirebaseAuth = () => {
     const unsubscribed = onAuthStateChanged(auth, (user) => {
       if (user) {
         const checkAdmin = async () => {
-          // const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${user.uid}`;
-          const url = `http://127.0.0.1:5000/api/v1/admin/${user.uid}`;
+          const url = `https://gentle-retreat-89471.herokuapp.com/api/v1/admin/${user.uid}`;
+          // const url = `http://127.0.0.1:5000/api/v1/admin/${user.uid}`;
           const admin = await fetch(url).then((res) => res.json());
           console.log(admin);
           setUser(user);
